@@ -1,0 +1,17 @@
+.new-button{
+    padding: 3px 12px;
+    align-self: center;
+    justify-self: end;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 10px;
+    cursor: pointer;
+    border: none;
+    color: rgb(118, 118, 118);
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+    
+      &:hover {
+        background-color: #ddd;
+      }
+}

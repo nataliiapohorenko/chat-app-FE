@@ -1,0 +1,21 @@
+.chat-list{
+
+    h2{
+        padding: 30px 15px;
+        font-weight: normal;
+        font-size: 16;
+        color: rgb(50, 170, 255)
+    }
+
+    &__item{
+        border-bottom: 3px solid #d7d6d6;
+        display: flex;
+        padding: 15px 10px 20px 20px;
+        cursor: pointer;
+    }
+
+    &__content{
+        flex: 1;
+        margin-left: 10px;
+    }
+}
