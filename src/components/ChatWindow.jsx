@@ -6,20 +6,24 @@ import useMessageService from "../services/MessageService";
 import '../styles/ChatWindow.scss';
 import avatarimg from '../assets/avatar.svg';
 
-function ChatWindow({ selectedChat, updatedMessages }){
+function ChatWindow({ selectedChat, updatedMessages, updateChatResult }){
 
     const divRef = useRef(null);
     
     const [messages, setMessages] = useState([]);
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
 
     const { getChat} = useMessageService();
 
-    const id = selectedChat?.[0] || null; 
-    const name = selectedChat?.[1] || null; 
+    const id = selectedChat?.id || null; 
+    const selectedChatName = selectedChat?.name || null; 
+    const selectedChatSurname = selectedChat?.surname || null; 
 
     useEffect(() => {
-        if (!id && !name) return; 
-
+        if (!id) return; 
+        setName(selectedChatName);
+        setSurname(selectedChatSurname);
         getChat(id)
             .then((res) => {
                 setMessages(res); 
@@ -27,7 +31,7 @@ function ChatWindow({ selectedChat, updatedMessages }){
             .catch((err) => {
                 console.error(err);
             });
-    }, [id, name]);
+    }, [id]);
 
     useEffect(() => {
         if (!updatedMessages?.response) return;
@@ -42,11 +46,19 @@ function ChatWindow({ selectedChat, updatedMessages }){
         }
       }, [messages]); 
 
+    useEffect(() => {
+        if(!updateChatResult?._id) return;
+        if(updateChatResult._id === id){
+            setName(updateChatResult.botName);
+            setSurname(updateChatResult.botSurname);
+        }
+    }, [updateChatResult?.botName, updateChatResult?.botSurname])
+
     function updateChat() {
         const elements = messages.map(({_id, content, sender, timestamp}) => {
             return (
                 <div key={_id}  className={`chat-window__message ${sender === 'bot' ? "left" : "right"}`}>
-                    {sender === 'bot' ? (<img src={avatarimg} alt={name} />) : null}
+                    {sender === 'bot' ? (<img src={avatarimg} alt={name+ ' ' + surname} />) : null}
                     <div className="message-content">
                         <div className="message__text">{content}</div>
                         <div className="message__date">{timestamp}</div>
@@ -62,7 +74,7 @@ function ChatWindow({ selectedChat, updatedMessages }){
             <div className="chat-window__header">
                 {id ? (<>
                     <img className="chat-window__avatar" src={avatarimg} alt="User avatar" />
-                    <h2>{name}</h2>
+                    <h2>{name + ' ' + surname}</h2>
                 </>) : null}
             </div>
             <div className="chat-window__body" ref={divRef}>
@@ -75,8 +87,9 @@ function ChatWindow({ selectedChat, updatedMessages }){
 }
 
 ChatWindow.propTypes = {
-    selectedChat: PropTypes.arrayOf(PropTypes.string).isRequired,
-    updatedMessages: PropTypes.object.isRequired
+    selectedChat: PropTypes.object.isRequired,
+    updatedMessages: PropTypes.object.isRequired,
+    updateChatResult: PropTypes.object.isRequired
 };
 
 export default ChatWindow;

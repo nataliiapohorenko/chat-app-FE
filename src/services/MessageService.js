@@ -4,17 +4,19 @@ const useMessageService = () => {
 
     const { request, clearError, process} = useHttp();
 
-    const _apiBase='http://localhost:8080/chat/';
+    const _apiBase='http://localhost:8080/chat';
 
     
     const getAllChats = async () => {
         const res = await request(`${_apiBase}`);
-        return res.chats.map(({_id, botName, botSurname, lastMessage}) => {
+        return res.chats.map(({_id, botName, botSurname, lastMessage, createdAt}) => {
             return{
                 id: _id,
-                name: botName + ' ' + botSurname,
+                name: botName,
+                surname: botSurname,
                 lastMessage: lastMessage ? lastMessage.content : '',
-                date: lastMessage ? lastMessage.timestamp : ''
+                date: lastMessage ? lastMessage.timestamp : '',
+                createdAt
             }
         });
     }
@@ -34,7 +36,17 @@ const useMessageService = () => {
         return res;
     } 
 
-    return {process, clearError, getAllChats, getChat, sendMessage, createChat}
+    const updateChat = async (body) => {
+        const res = await request(`${_apiBase}/chat`, 'PUT', body);
+        return res;
+    } 
+
+    const deleteChat = async (id) => {
+        const res = await request(`${_apiBase}/chat`, 'DELETE', id);
+        return res;
+    }
+
+    return {process, clearError, getAllChats, getChat, sendMessage, createChat, updateChat, deleteChat};
 }
 
 export default useMessageService;

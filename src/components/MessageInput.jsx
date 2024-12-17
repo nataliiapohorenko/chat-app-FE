@@ -8,7 +8,7 @@ function MessageInput({selectedChat, setUpdatedMessages}){
 
     const inputRef = useRef();
 
-    const id = selectedChat?.[0] || null;
+    const id = selectedChat?.id || null;
 
     const { sendMessage} = useMessageService();
 
@@ -53,7 +53,7 @@ function MessageInput({selectedChat, setUpdatedMessages}){
 }
 
 MessageInput.propTypes = {
-    selectedChat: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedChat: PropTypes.object.isRequired,
     setUpdatedMessages: PropTypes.func.isRequired
 };
 
