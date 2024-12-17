@@ -22,6 +22,8 @@ function MainPage() {
     const [deletedChatId, setDeletedChatId] = useState('');
     const [deletedAt, setDeletedAt] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
+    const [messageToEdit, setMessageToEdit] = useState({});
+    const [editedMessage, setEditedMessage] = useState({});
 
     useEffect(() => {
         if (!updatedMessages?.response) return;
@@ -58,7 +60,8 @@ function MainPage() {
                         <NewChatButton onClick={() => setAction('create')} />
                     </div>
                 </div>
-                <ChatList setSelectedChat={setSelectedChat} 
+                <ChatList 
+                    setSelectedChat={setSelectedChat} 
                     updatedMessages={updatedMessages} 
                     newChat={newChat} 
                     setAction={setAction}
@@ -70,8 +73,18 @@ function MainPage() {
                     searchQuery={searchQuery}/>
             </div>
             <div className="main">
-                <ChatWindow selectedChat={selectedChat} updatedMessages={updatedMessages} updateChatResult={updateChatResult}/>
-                <MessageInput selectedChat={selectedChat} setUpdatedMessages={setUpdatedMessages}/>
+                <ChatWindow 
+                    selectedChat={selectedChat} 
+                    updatedMessages={updatedMessages} 
+                    updateChatResult={updateChatResult}
+                    setMessageToEdit={setMessageToEdit}
+                    editedMessage={editedMessage}/>
+                <MessageInput 
+                    selectedChat={selectedChat} 
+                    setUpdatedMessages={setUpdatedMessages}
+                    messageToEdit={messageToEdit}
+                    setMessageToEdit={setMessageToEdit}
+                    setEditedMessage={setEditedMessage}/>
             </div>
             <Popup action={action} 
                 onClose={() => setAction(null)} 

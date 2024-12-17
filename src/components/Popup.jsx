@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 import useMessageService from '../services/MessageService';
 import '../styles/Popup.scss';
 
-function Popup({ onClose, action, setNewChat, updateChatValue, setUpdateChatResult, deletedChatId, setDeletedAt}) {
+function Popup({ 
+      onClose, 
+      action, 
+      setNewChat, 
+      updateChatValue, 
+      setUpdateChatResult, 
+      deletedChatId, 
+      setDeletedAt}) {
+        
   const [firstName, setFirstName] = useState(""); 
   const [lastName, setLastName] = useState("");
   const [errors, setErrors] = useState({ firstName: false, lastName: false });
@@ -11,11 +19,14 @@ function Popup({ onClose, action, setNewChat, updateChatValue, setUpdateChatResu
   const {createChat, updateChat, deleteChat} = useMessageService();
 
   useEffect(() => {
+    setErrors({ firstName: false, lastName: false });
+    setFirstName('');
+    setLastName('');
     if (action === 'update') {
       setFirstName(updateChatValue.name);
       setLastName(updateChatValue.surname);
     }
-  },[action])
+  },[action, updateChatValue?.name, updateChatValue?.surname])
 
   const validateField = (name, value) => {
     setErrors((prevErrors) => ({
@@ -68,11 +79,16 @@ function Popup({ onClose, action, setNewChat, updateChatValue, setUpdateChatResu
       onClose();
   }
 
+  const isUpdateDisabled =
+    action === "update" &&
+    firstName === updateChatValue.name &&
+    lastName === updateChatValue.surname;
+
   if (!action) return null;
   
   return (
     <div className="popup-overlay" onClick={onClose}>
-      <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+      <div className={`popup-content ${action === 'delete' ? '' : "big"}`}onClick={(e) => e.stopPropagation()}>
         {(action === 'create' || action === 'update') 
           ? 
           <>
@@ -83,7 +99,7 @@ function Popup({ onClose, action, setNewChat, updateChatValue, setUpdateChatResu
                 <input type="text" value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   onBlur={(e) => validateField("firstName", e.target.value)}
-                  className={errors.firstName ? "error-border" : ""} required />
+                  className={`popup-input ${errors.firstName ? "error-border" : ""}`} required />
               </label>
               <br />
               <label>
@@ -91,18 +107,18 @@ function Popup({ onClose, action, setNewChat, updateChatValue, setUpdateChatResu
                 <input type="text" value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   onBlur={(e) => validateField("lastName", e.target.value)}
-                  className={errors.lastName ? "error-border" : ""} required />
+                  className={`popup-input ${errors.lastName ? "error-border" : ""}`} required />
               </label>
-              <button type="submit">{action === 'create' ? 'Create' : 'Update'}</button>
+              <button type="submit" disabled={isUpdateDisabled} className='btn'>{action === 'create' ? 'Create' : 'Update'}</button>
             </form>
           </> 
           :
-          <div>
+          <div className='popup-delete'>
             <h3>You sure?</h3>
-            <button onClick={handleDelete}>Delete</button>
+            <button onClick={handleDelete} className='btn'>Delete</button>
           </div>
         }
-        <button className="close-btn" onClick={onClose}>Close</button>
+        <button className="close-btn btn cancel-btn" onClick={onClose}>Close</button>
       </div>
     </div>
   );

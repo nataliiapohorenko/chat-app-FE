@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 import '../styles/SearchBar.scss';
+import findimd from '../assets/find.svg';
 
 
 function SearchBar({ onSearch }){
@@ -17,7 +18,7 @@ function SearchBar({ onSearch }){
                 onChange={handleInputChange}
                 className="search-panel__input"
             />
-            <button className="search-panel__button">S</button>
+            <img src={findimd} alt="find" className='search-panel__img'/>
     </div>
     )
 }

@@ -5,8 +5,9 @@ import useMessageService from "../services/MessageService";
 
 import '../styles/ChatWindow.scss';
 import avatarimg from '../assets/avatar.svg';
+import editimg from '../assets/edit.svg';
 
-function ChatWindow({ selectedChat, updatedMessages, updateChatResult }){
+function ChatWindow({ selectedChat, updatedMessages, updateChatResult, setMessageToEdit, editedMessage }){
 
     const divRef = useRef(null);
     
@@ -52,7 +53,32 @@ function ChatWindow({ selectedChat, updatedMessages, updateChatResult }){
             setName(updateChatResult.botName);
             setSurname(updateChatResult.botSurname);
         }
-    }, [updateChatResult?.botName, updateChatResult?.botSurname])
+    }, [updateChatResult?.botName, updateChatResult?.botSurname]);
+
+    useEffect(() => {
+        if (editedMessage?.chatId && editedMessage.chatId === selectedChat?.id) {
+            setMessages((prevMessages) =>
+                prevMessages.map((message) =>
+                    message._id === editedMessage._id
+                        ? { ...message, content: editedMessage.content }
+                        : message
+                )
+            );
+        }
+    }, [JSON.stringify(editedMessage)]);
+
+    function formatLocalDateTime(isoString) {
+        const date = new Date(isoString);
+        const options = {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        };
+        return date.toLocaleString('en-US', options);
+    }
 
     function updateChat() {
         const elements = messages.map(({_id, content, sender, timestamp}) => {
@@ -60,8 +86,14 @@ function ChatWindow({ selectedChat, updatedMessages, updateChatResult }){
                 <div key={_id}  className={`chat-window__message ${sender === 'bot' ? "left" : "right"}`}>
                     {sender === 'bot' ? (<img src={avatarimg} alt={name+ ' ' + surname} />) : null}
                     <div className="message-content">
-                        <div className="message__text">{content}</div>
-                        <div className="message__date">{timestamp}</div>
+                        <div className="message__text">
+                            {content}
+                            {sender === 'user' &&
+                            <button className="icon-btn message__button" onClick={() => setMessageToEdit({ _id, content })}>
+                                <img className="icon-img" src={editimg} alt="Edit message" />
+                            </button>}
+                        </div>
+                        <div className="message__date">{formatLocalDateTime(timestamp)}</div>
                     </div>
                 </div>
             )
@@ -89,7 +121,9 @@ function ChatWindow({ selectedChat, updatedMessages, updateChatResult }){
 ChatWindow.propTypes = {
     selectedChat: PropTypes.object.isRequired,
     updatedMessages: PropTypes.object.isRequired,
-    updateChatResult: PropTypes.object.isRequired
+    updateChatResult: PropTypes.object.isRequired,
+    setMessageToEdit: PropTypes.func.isRequired,
+    editedMessage: PropTypes.object.isRequired,
 };
 
 export default ChatWindow;

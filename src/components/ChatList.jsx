@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import useMessageService from "../services/MessageService";
 import '../styles/ChatList.scss'
 import avatarimg from '../assets/avatar.svg';
+import editimg from '../assets/edit.svg';
+import deleteimg from '../assets/delete.svg';
 
 function ChatList({ setSelectedChat, 
                     updatedMessages, 
@@ -80,6 +82,12 @@ function ChatList({ setSelectedChat,
         setDeletedChatId(id);
     }
 
+    function formatLocalDate(isoString) {
+        const date = new Date(isoString);
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+
     function updateChats () {
         const elements = [...filteredChats].sort((a,b) => {
                 const dateA = a.date ? new Date(a.date) : new Date(a.createdAt);
@@ -93,10 +101,14 @@ function ChatList({ setSelectedChat,
                             <h3>{name + ' ' + surname}</h3>
                             <p>{lastMessage}</p>
                         </div>    
-                        <span>{date}</span>
-                        <div>
-                        <button onClick={(e) => {e.stopPropagation(); updateChat([id, name, surname]);}}>U</button>
-                            <button onClick={(e) => {e.stopPropagation(); deleteChat(id);}}>D</button>
+                        <span>{date && formatLocalDate(date)}</span>
+                        <div className="chat-list__buttons">
+                        <button className="icon-btn" onClick={(e) => {e.stopPropagation(); updateChat([id, name, surname]);}}>
+                            <img className="icon-img" src={editimg} alt="edit"></img>
+                        </button>
+                            <button className="icon-btn" onClick={(e) => {e.stopPropagation(); deleteChat(id);}}>
+                                <img className="icon-img delete-img" src={deleteimg} alt="delete"></img>
+                            </button>
                         </div>
                     </div>
                 )

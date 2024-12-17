@@ -4,7 +4,7 @@ import '../styles/NewChatButton.scss';
 function NewChatButton({ onClick }){
     return(
         <button onClick={onClick} className="new-button">
-            new <br />chat
+            New <br />chat 
         </button>
     )
 }

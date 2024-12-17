@@ -19,34 +19,39 @@ const useMessageService = () => {
                 createdAt
             }
         });
-    }
+    };
 
     const getChat = async (id) => {
         const res = await request(`${_apiBase}/${id}`);
         return res.messages;
-    }
+    };
 
     const sendMessage = async (body) => {
         const res = await request(`${_apiBase}/message`, 'POST', body);
         return res;
-    }
+    };
 
     const createChat = async (body) => {
         const res = await request(`${_apiBase}/chat`, 'POST', body);
         return res;
-    } 
+    };
 
     const updateChat = async (body) => {
         const res = await request(`${_apiBase}/chat`, 'PUT', body);
         return res;
-    } 
+    };
 
     const deleteChat = async (id) => {
         const res = await request(`${_apiBase}/chat`, 'DELETE', id);
         return res;
-    }
+    };
 
-    return {process, clearError, getAllChats, getChat, sendMessage, createChat, updateChat, deleteChat};
+    const updateMessage = async (body) => {
+        const res = await request(`${_apiBase}/message`, 'PUT', body);
+        return res;
+    };
+
+    return {process, clearError, getAllChats, getChat, sendMessage, createChat, updateChat, deleteChat, updateMessage};
 }
 
 export default useMessageService;

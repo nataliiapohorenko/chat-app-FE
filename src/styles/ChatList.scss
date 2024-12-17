@@ -1,22 +1,54 @@
+@use './variables' as vars;
+
 .chat-list{
     overflow-y: scroll;
+    height: 87vh;
 
     h2{
         padding: 30px 15px;
         font-weight: normal;
-        font-size: 16;
-        color: rgb(50, 170, 255)
+        font-size: 18px;
+        color: vars.$blue-color;
     }
 
     &__item{
+        height: 100px;
         border-bottom: 3px solid #d7d6d6;
         display: flex;
         padding: 15px 10px 20px 20px;
         cursor: pointer;
+
+        img{
+            height: 30px;
+            margin: 5px 5px 0 0;
+        }
+
+        span{
+            font-size: 11px;
+            color: vars.$primary-font-color;
+        }
     }
 
     &__content{
         flex: 1;
         margin-left: 10px;
+
+        h3{
+            font-size: 14px;
+            font-weight: normal;
+            color: vars.$primary-font-color;
+        }
+        p{
+            margin-top: 5px;
+            font-size: 12px;
+            font-weight: 400;
+            color: vars.$secondary-font-color;
+
+        }
+    }
+
+    &__buttons{
+        display: flex;
+        flex-direction: column;
     }
 }
