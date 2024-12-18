@@ -4,7 +4,7 @@ const useMessageService = () => {
 
     const { request, clearError, process} = useHttp();
 
-    const _apiBase='http://localhost:8080/chat';
+    const _apiBase='https://chat-app-be-hij6.onrender.com/chat';
 
     
     const getAllChats = async () => {
