@@ -12,6 +12,7 @@ import NewChatButton from '../components/NewChatButton';
 import Popup from '../components/Popup';
 import RandomButton from '../components/RandomButton';
 
+import config from '../config';
 import "react-toastify/dist/ReactToastify.css";
 import '../styles/MainPage.scss';
 
@@ -31,7 +32,7 @@ function MainPage({user, setIsAuthenticated}) {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const newSocket = io('http://localhost:8080');
+        const newSocket = io(config.apiUrl);
         setSocket(newSocket);
         const storedItem = localStorage.getItem('authToken');
         let token = null;
