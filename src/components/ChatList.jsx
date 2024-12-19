@@ -46,7 +46,7 @@ function ChatList({ setSelectedChat,
         const newChatName = newChat.botName;
         const newChatSurname = newChat.botSurname;
         setChats([...chats, {id: newChatId, name: newChatName, surname: newChatSurname, lastMessage: '', date: '', createdAt: newChat.createdAt}]);
-        setSelectedChat({newChatId, newChatName, newChatSurname});
+        setSelectedChat({id: newChatId, name: newChatName, surname: newChatSurname});
         updateChats();
     }, [newChat._id]);
 
