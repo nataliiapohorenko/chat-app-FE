@@ -36,7 +36,11 @@ function ChatWindow({ selectedChat, updatedMessages, updateChatResult, setMessag
 
     useEffect(() => {
         if (!updatedMessages?.response) return;
-        setMessages([...messages, updatedMessages.message, updatedMessages.response]);
+        if(updatedMessages?.message){
+            setMessages([...messages, updatedMessages.message, updatedMessages.response]);
+        } else{
+            setMessages([...messages, updatedMessages.response]);
+        }
         updateChat()
     }, [updatedMessages?.updateNotification]);
 

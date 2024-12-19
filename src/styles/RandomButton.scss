@@ -1,0 +1,12 @@
+.random-button{
+    border: 1px solid rgb(118, 118, 118);
+    border-radius: 2px;
+    color: rgb(118, 118, 118);
+    cursor: pointer;
+    padding: 2px 5px;
+    transition: background-color 0.3s ease;
+
+    &:hover{
+        background-color: #ddd;
+    }
+}

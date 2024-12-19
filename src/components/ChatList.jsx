@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {useEffect } from "react";
 import PropTypes from "prop-types";
 import useMessageService from "../services/MessageService";
 import '../styles/ChatList.scss'
@@ -15,9 +15,11 @@ function ChatList({ setSelectedChat,
                     setDeletedChatId, 
                     deletedChatId, 
                     deletedAt,
-                    searchQuery }) {
+                    searchQuery,
+                    chats,
+                    setChats }) {
 
-    const [chats, setChats] = useState([]);
+    
     const { getAllChats} = useMessageService();
 
     useEffect(() =>{
@@ -138,7 +140,9 @@ ChatList.propTypes = {
     setDeletedChatId: PropTypes.func.isRequired,
     deletedChatId: PropTypes.string.isRequired,
     deletedAt: PropTypes.string.isRequired,
-    searchQuery: PropTypes.string.isRequired
+    searchQuery: PropTypes.string.isRequired,
+    chats: PropTypes.array.isRequired,
+    setChats: PropTypes.func.isRequired,
 };
 
 export default ChatList;

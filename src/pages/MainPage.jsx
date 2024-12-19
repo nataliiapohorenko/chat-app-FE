@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from "react-toastify";
 import PropTypes from 'prop-types';
+import { io } from 'socket.io-client';
 
 import LoginButton from '../components/LoginButton';
 import SearchBar from '../components/SearchBar';
@@ -9,11 +10,13 @@ import ChatWindow from '../components/ChatWindow';
 import MessageInput from '../components/MessageInput';
 import NewChatButton from '../components/NewChatButton';
 import Popup from '../components/Popup';
+import RandomButton from '../components/RandomButton';
 
 import "react-toastify/dist/ReactToastify.css";
 import '../styles/MainPage.scss';
 
 function MainPage({user, setIsAuthenticated}) {
+    const [chats, setChats] = useState([]);
     const [selectedChat, setSelectedChat] = useState({});
     const [updatedMessages, setUpdatedMessages] = useState({});
     const [action, setAction] = useState('');
@@ -25,12 +28,32 @@ function MainPage({user, setIsAuthenticated}) {
     const [searchQuery, setSearchQuery] = useState('');
     const [messageToEdit, setMessageToEdit] = useState({});
     const [editedMessage, setEditedMessage] = useState({});
+    const [socket, setSocket] = useState(null);
+
+    useEffect(() => {
+        const newSocket = io('http://localhost:8080');
+        setSocket(newSocket);
+        const storedItem = localStorage.getItem('authToken');
+        let token = null;
+        if(storedItem){
+            const { token: storedToken } = JSON.parse(storedItem);
+            token = storedToken;
+        }
+        newSocket.emit('authorization', token);
+    
+        return () => {
+            newSocket.disconnect();
+        };
+    }, []);
 
     useEffect(() => {
         if (!updatedMessages?.response) return;
         const latestMessage = updatedMessages.response.content;
-        showNotification(latestMessage);
-        console.log(updatedMessages)
+        const sender = chats.filter(chat => {
+            return chat.id === updatedMessages.response.chatId
+        });
+        const {name, surname} = sender[0];
+        showNotification(latestMessage, name, surname);
         
       }, [updatedMessages?.updateNotification]);
 
@@ -40,8 +63,8 @@ function MainPage({user, setIsAuthenticated}) {
         }
       }, [deletedAt]);
 
-    const showNotification = (message) => {
-        toast.success(`New Message: ${message}`, {
+    const showNotification = (message, name, surname) => {
+        toast.success(`${name} ${surname}: ${message}`, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -64,6 +87,7 @@ function MainPage({user, setIsAuthenticated}) {
                         <NewChatButton onClick={() => setAction('create')} />
                     </div>
                 </div>
+                <RandomButton socket={socket} setUpdatedMessages={setUpdatedMessages}/>
                 <ChatList 
                     setSelectedChat={setSelectedChat} 
                     updatedMessages={updatedMessages} 
@@ -74,7 +98,9 @@ function MainPage({user, setIsAuthenticated}) {
                     setDeletedChatId={setDeletedChatId}
                     deletedChatId={deletedChatId}
                     deletedAt={deletedAt}
-                    searchQuery={searchQuery}/>
+                    searchQuery={searchQuery}
+                    chats={chats}
+                    setChats={setChats}/>
             </div>
             <div className="main">
                 <ChatWindow 
