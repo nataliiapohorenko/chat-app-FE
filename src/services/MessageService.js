@@ -1,10 +1,11 @@
 import { useHttp } from "../hooks/http.hook";
+import config from '../config.js';
 
 const useMessageService = () => {
 
     const { request, clearError, process} = useHttp();
 
-    const _apiBase='https://chat-app-be-hij6.onrender.com/chat';
+    const _apiBase=`${config.apiUrl}/chat`;
 
     
     const getAllChats = async () => {

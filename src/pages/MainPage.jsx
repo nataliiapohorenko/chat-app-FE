@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from "react-toastify";
+import PropTypes from 'prop-types';
 
 import LoginButton from '../components/LoginButton';
 import SearchBar from '../components/SearchBar';
@@ -12,7 +13,7 @@ import Popup from '../components/Popup';
 import "react-toastify/dist/ReactToastify.css";
 import '../styles/MainPage.scss';
 
-function MainPage() {
+function MainPage({user, setIsAuthenticated}) {
     const [selectedChat, setSelectedChat] = useState({});
     const [updatedMessages, setUpdatedMessages] = useState({});
     const [action, setAction] = useState('');
@@ -54,7 +55,10 @@ function MainPage() {
         <div className="app">
             <div className="sidebar">
                 <div className="header">
-                    <LoginButton/>
+                    <div className='header-content'>
+                        <h2>{user}</h2>
+                        <LoginButton setIsAuthenticated={setIsAuthenticated}/>
+                    </div>
                     <div className="actions">
                         <SearchBar onSearch={(value) => setSearchQuery(value)}/>
                         <NewChatButton onClick={() => setAction('create')} />
@@ -97,5 +101,10 @@ function MainPage() {
         </div>
     )
 }
+
+MainPage.propTypes = {
+    user: PropTypes.string.isRequired,
+    setIsAuthenticated: PropTypes.func
+};
 
 export default MainPage;

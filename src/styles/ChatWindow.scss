@@ -97,4 +97,11 @@
     .left{
         align-items:flex-start;
     }
+
+    &__empty{
+        font-size: 16px;
+        color: vars.$primary-font-color;
+        margin-top: 20px;
+        margin-left: 30px;
+    }
 }

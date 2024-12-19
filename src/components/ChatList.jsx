@@ -98,14 +98,16 @@ function ChatList({ setSelectedChat,
                     <div key={id} className="chat-list__item" onClick={() => setSelectedChat({id, name, surname})}>
                         <img src={avatarimg} alt={name + ' ' + surname} className="chat-list__avatar" />
                         <div className="chat-list__content">
-                            <h3>{name + ' ' + surname}</h3>
+                            <div className="chat-list__content-header">
+                                <h3>{name + ' ' + surname}</h3>
+                                <span>{date && formatLocalDate(date)}</span>
+                            </div>
                             <p>{lastMessage}</p>
                         </div>    
-                        <span>{date && formatLocalDate(date)}</span>
                         <div className="chat-list__buttons">
-                        <button className="icon-btn" onClick={(e) => {e.stopPropagation(); updateChat([id, name, surname]);}}>
-                            <img className="icon-img" src={editimg} alt="edit"></img>
-                        </button>
+                            <button className="icon-btn" onClick={(e) => {e.stopPropagation(); updateChat([id, name, surname]);}}>
+                                <img className="icon-img" src={editimg} alt="edit"></img>
+                            </button>
                             <button className="icon-btn" onClick={(e) => {e.stopPropagation(); deleteChat(id);}}>
                                 <img className="icon-img delete-img" src={deleteimg} alt="delete"></img>
                             </button>

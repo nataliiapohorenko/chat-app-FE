@@ -112,7 +112,7 @@ function ChatWindow({ selectedChat, updatedMessages, updateChatResult, setMessag
             <div className="chat-window__body" ref={divRef}>
                 {id ? (<>
                     {updateChat()}
-                </>) : (<p>Select chat</p>)}
+                </>) : (<p className="chat-window__empty">Select chat</p>)}
             </div>
         </div>
     )

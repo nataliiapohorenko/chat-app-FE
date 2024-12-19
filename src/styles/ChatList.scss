@@ -12,39 +12,44 @@
     }
 
     &__item{
-        height: 100px;
+        height: 120px;
         border-bottom: 3px solid #d7d6d6;
         display: flex;
-        padding: 15px 10px 20px 20px;
+        padding: 15px 10px 20px;
         cursor: pointer;
 
-        img{
-            height: 30px;
-            margin: 5px 5px 0 0;
+        p{
+            margin-top: 5px;
+            font-size: 12px;
+            font-weight: 400;
+            color: vars.$secondary-font-color;
         }
+    }
 
-        span{
-            font-size: 11px;
-            color: vars.$primary-font-color;
-        }
+    &__avatar{
+        height: 30px;
+        margin: 5px 5px 0 0;
     }
 
     &__content{
         flex: 1;
         margin-left: 10px;
 
+        &-header{
+            display: flex;
+            justify-content: space-between;
+        }
+
         h3{
             font-size: 14px;
             font-weight: normal;
             color: vars.$primary-font-color;
         }
-        p{
-            margin-top: 5px;
-            font-size: 12px;
-            font-weight: 400;
-            color: vars.$secondary-font-color;
-
+        span{
+            font-size: 11px;
+            color: vars.$primary-font-color;
         }
+       
     }
 
     &__buttons{

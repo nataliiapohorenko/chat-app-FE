@@ -1,0 +1,30 @@
+@use './variables' as vars;
+
+.login{
+    width: 100vw;
+    height: 100vh;
+    background-color: #a19ac1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 200px;
+        width: 300px;
+        background-color: #ecebeb;
+        border: 5px solid transparent;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+        padding: 30px;
+        box-sizing: border-box;
+
+        p{
+            color: vars.$primary-font-color;
+            font-size: 14px;
+        }
+    }
+}
